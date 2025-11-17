@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 /// Localizations for the Flutter library.
-// ignore: unnecessary_library_name
 library flutter_localizations;
 
 export 'src/cupertino_localizations.dart';

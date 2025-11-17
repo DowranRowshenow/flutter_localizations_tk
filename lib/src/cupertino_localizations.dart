@@ -357,12 +357,12 @@ abstract class GlobalCupertinoLocalizations implements CupertinoLocalizations {
 
   @override
   List<String> get timerPickerHourLabels => <String>[
-    if (timerPickerHourLabelZero != null) timerPickerHourLabelZero!,
-    if (timerPickerHourLabelOne != null) timerPickerHourLabelOne!,
-    if (timerPickerHourLabelTwo != null) timerPickerHourLabelTwo!,
-    if (timerPickerHourLabelFew != null) timerPickerHourLabelFew!,
-    if (timerPickerHourLabelMany != null) timerPickerHourLabelMany!,
-    if (timerPickerHourLabelOther != null) timerPickerHourLabelOther!,
+    ?timerPickerHourLabelZero,
+    ?timerPickerHourLabelOne,
+    ?timerPickerHourLabelTwo,
+    ?timerPickerHourLabelFew,
+    ?timerPickerHourLabelMany,
+    ?timerPickerHourLabelOther,
   ];
 
   /// Subclasses should provide the optional zero pluralization of [timerPickerMinuteLabel] based on the ARB file.
@@ -405,12 +405,12 @@ abstract class GlobalCupertinoLocalizations implements CupertinoLocalizations {
 
   @override
   List<String> get timerPickerMinuteLabels => <String>[
-    if (timerPickerMinuteLabelZero != null) timerPickerMinuteLabelZero!,
-    if (timerPickerMinuteLabelOne != null) timerPickerMinuteLabelOne!,
-    if (timerPickerMinuteLabelTwo != null) timerPickerMinuteLabelTwo!,
-    if (timerPickerMinuteLabelFew != null) timerPickerMinuteLabelFew!,
-    if (timerPickerMinuteLabelMany != null) timerPickerMinuteLabelMany!,
-    if (timerPickerMinuteLabelOther != null) timerPickerMinuteLabelOther!,
+    ?timerPickerMinuteLabelZero,
+    ?timerPickerMinuteLabelOne,
+    ?timerPickerMinuteLabelTwo,
+    ?timerPickerMinuteLabelFew,
+    ?timerPickerMinuteLabelMany,
+    ?timerPickerMinuteLabelOther,
   ];
 
   /// Subclasses should provide the optional zero pluralization of [timerPickerSecondLabel] based on the ARB file.
@@ -453,12 +453,12 @@ abstract class GlobalCupertinoLocalizations implements CupertinoLocalizations {
 
   @override
   List<String> get timerPickerSecondLabels => <String>[
-    if (timerPickerSecondLabelZero != null) timerPickerSecondLabelZero!,
-    if (timerPickerSecondLabelOne != null) timerPickerSecondLabelOne!,
-    if (timerPickerSecondLabelTwo != null) timerPickerSecondLabelTwo!,
-    if (timerPickerSecondLabelFew != null) timerPickerSecondLabelFew!,
-    if (timerPickerSecondLabelMany != null) timerPickerSecondLabelMany!,
-    if (timerPickerSecondLabelOther != null) timerPickerSecondLabelOther!,
+    ?timerPickerSecondLabelZero,
+    ?timerPickerSecondLabelOne,
+    ?timerPickerSecondLabelTwo,
+    ?timerPickerSecondLabelFew,
+    ?timerPickerSecondLabelMany,
+    ?timerPickerSecondLabelOther,
   ];
 
   /// A [LocalizationsDelegate] for [CupertinoLocalizations].
@@ -490,20 +490,17 @@ abstract class GlobalCupertinoLocalizations implements CupertinoLocalizations {
   ///   // ...
   /// )
   /// ```
-  static const List<LocalizationsDelegate<dynamic>> delegates =
-      <LocalizationsDelegate<dynamic>>[
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> delegates = <LocalizationsDelegate<dynamic>>[
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 }
 
-class _GlobalCupertinoLocalizationsDelegate
-    extends LocalizationsDelegate<CupertinoLocalizations> {
+class _GlobalCupertinoLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
   const _GlobalCupertinoLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) =>
-      kCupertinoSupportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) => kCupertinoSupportedLanguages.contains(locale.languageCode);
 
   static final Map<Locale, Future<CupertinoLocalizations>> _loadedTranslations =
       <Locale, Future<CupertinoLocalizations>>{};
@@ -514,9 +511,7 @@ class _GlobalCupertinoLocalizationsDelegate
     return _loadedTranslations.putIfAbsent(locale, () {
       util.loadDateIntlDataIfNotLoaded();
 
-      final String localeName = intl.Intl.canonicalizedLocale(
-        locale.toString(),
-      );
+      final String localeName = intl.Intl.canonicalizedLocale(locale.toString());
       assert(
         locale.toString() == localeName,
         'Flutter does not support the non-standard locale form $locale (which '
@@ -540,7 +535,7 @@ class _GlobalCupertinoLocalizationsDelegate
         dayFormat = intl.DateFormat.d(locale);
         weekdayFormat = intl.DateFormat.E(locale);
         mediumDateFormat = intl.DateFormat.MMMEd(locale);
-        // (xster): fix when https://github.com/dart-lang/intl/issues/207 is resolved.
+        // TODO(xster): fix when https://github.com/dart-lang/intl/issues/207 is resolved.
         singleDigitHourFormat = intl.DateFormat('HH', locale);
         singleDigitMinuteFormat = intl.DateFormat.m(locale);
         doubleDigitMinuteFormat = intl.DateFormat('mm', locale);
