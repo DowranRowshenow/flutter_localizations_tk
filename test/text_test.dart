@@ -3,11 +3,13 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations_tk/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Material2 - Text baseline with CJK locale', (WidgetTester tester) async {
+  testWidgets('Material2 - Text baseline with CJK locale', (
+    WidgetTester tester,
+  ) async {
     // This test in combination with 'Text baseline with EN locale' verify the baselines
     // used to align text with ideographic baselines are reasonable. We are currently
     // using the alphabetic baseline to lay out as the ideographic baseline is not yet
@@ -43,11 +45,17 @@ void main() {
                     return <PopupMenuItem<int>>[
                       const PopupMenuItem<int>(
                         value: 1,
-                        child: Text('hello, world', style: TextStyle(color: Colors.blue)),
+                        child: Text(
+                          'hello, world',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                       const PopupMenuItem<int>(
                         value: 2,
-                        child: Text('你好，世界', style: TextStyle(color: Colors.blue)),
+                        child: Text(
+                          '你好，世界',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                     ];
                   },
@@ -72,7 +80,9 @@ void main() {
     expect(tester.getBottomLeft(find.text('你好，世界')).dy, 364.5);
   });
 
-  testWidgets('Material3 - Text baseline with CJK locale', (WidgetTester tester) async {
+  testWidgets('Material3 - Text baseline with CJK locale', (
+    WidgetTester tester,
+  ) async {
     // This test in combination with 'Text baseline with EN locale' verify the baselines
     // used to align text with ideographic baselines are reasonable. We are currently
     // using the alphabetic baseline to lay out as the ideographic baseline is not yet
@@ -107,11 +117,17 @@ void main() {
                     return <PopupMenuItem<int>>[
                       const PopupMenuItem<int>(
                         value: 1,
-                        child: Text('hello, world', style: TextStyle(color: Colors.blue)),
+                        child: Text(
+                          'hello, world',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                       const PopupMenuItem<int>(
                         value: 2,
-                        child: Text('你好，世界', style: TextStyle(color: Colors.blue)),
+                        child: Text(
+                          '你好，世界',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                     ];
                   },
@@ -136,7 +152,9 @@ void main() {
     expect(tester.getBottomLeft(find.text('你好，世界')).dy, 366.0);
   });
 
-  testWidgets('Material2 - Text baseline with EN locale', (WidgetTester tester) async {
+  testWidgets('Material2 - Text baseline with EN locale', (
+    WidgetTester tester,
+  ) async {
     // This test in combination with 'Text baseline with CJK locale' verify the baselines
     // used to align text with ideographic baselines are reasonable. We are currently
     // using the alphabetic baseline to lay out as the ideographic baseline is not yet
@@ -172,11 +190,17 @@ void main() {
                     return <PopupMenuItem<int>>[
                       const PopupMenuItem<int>(
                         value: 1,
-                        child: Text('hello, world', style: TextStyle(color: Colors.blue)),
+                        child: Text(
+                          'hello, world',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                       const PopupMenuItem<int>(
                         value: 2,
-                        child: Text('你好，世界', style: TextStyle(color: Colors.blue)),
+                        child: Text(
+                          '你好，世界',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                     ];
                   },
@@ -201,7 +225,9 @@ void main() {
     expect(tester.getBottomLeft(find.text('你好，世界')).dy, 364.0);
   });
 
-  testWidgets('Material3 - Text baseline with EN locale', (WidgetTester tester) async {
+  testWidgets('Material3 - Text baseline with EN locale', (
+    WidgetTester tester,
+  ) async {
     // This test in combination with 'Text baseline with CJK locale' verify the baselines
     // used to align text with ideographic baselines are reasonable. We are currently
     // using the alphabetic baseline to lay out as the ideographic baseline is not yet
@@ -236,11 +262,17 @@ void main() {
                     return <PopupMenuItem<int>>[
                       const PopupMenuItem<int>(
                         value: 1,
-                        child: Text('hello, world', style: TextStyle(color: Colors.blue)),
+                        child: Text(
+                          'hello, world',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                       const PopupMenuItem<int>(
                         value: 2,
-                        child: Text('你好，世界', style: TextStyle(color: Colors.blue)),
+                        child: Text(
+                          '你好，世界',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                     ];
                   },

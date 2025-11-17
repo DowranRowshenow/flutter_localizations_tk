@@ -3,12 +3,17 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations_tk/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Test semantics of TabPageSelector in pt-BR', (WidgetTester tester) async {
-    final TabController controller = TabController(vsync: const TestVSync(), length: 2);
+  testWidgets('Test semantics of TabPageSelector in pt-BR', (
+    WidgetTester tester,
+  ) async {
+    final TabController controller = TabController(
+      vsync: const TestVSync(),
+      length: 2,
+    );
 
     await tester.pumpWidget(
       Localizations(

@@ -4,7 +4,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations_tk/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class TestLocalizations {
@@ -14,7 +14,9 @@ class TestLocalizations {
   final String? prefix;
 
   static Future<TestLocalizations> loadSync(Locale locale, String? prefix) {
-    return SynchronousFuture<TestLocalizations>(TestLocalizations(locale, prefix));
+    return SynchronousFuture<TestLocalizations>(
+      TestLocalizations(locale, prefix),
+    );
   }
 
   static Future<TestLocalizations> loadAsync(Locale locale, String? prefix) {
@@ -31,7 +33,8 @@ class TestLocalizations {
   String get message => '${prefix ?? ""}$locale';
 }
 
-class SyncTestLocalizationsDelegate extends LocalizationsDelegate<TestLocalizations> {
+class SyncTestLocalizationsDelegate
+    extends LocalizationsDelegate<TestLocalizations> {
   SyncTestLocalizationsDelegate([this.prefix]);
 
   final String? prefix; // Changing this value triggers a rebuild
@@ -41,7 +44,8 @@ class SyncTestLocalizationsDelegate extends LocalizationsDelegate<TestLocalizati
   bool isSupported(Locale locale) => true;
 
   @override
-  Future<TestLocalizations> load(Locale locale) => TestLocalizations.loadSync(locale, prefix);
+  Future<TestLocalizations> load(Locale locale) =>
+      TestLocalizations.loadSync(locale, prefix);
 
   @override
   bool shouldReload(SyncTestLocalizationsDelegate old) {
@@ -50,10 +54,12 @@ class SyncTestLocalizationsDelegate extends LocalizationsDelegate<TestLocalizati
   }
 
   @override
-  String toString() => '${objectRuntimeType(this, 'SyncTestLocalizationsDelegate')}($prefix)';
+  String toString() =>
+      '${objectRuntimeType(this, 'SyncTestLocalizationsDelegate')}($prefix)';
 }
 
-class AsyncTestLocalizationsDelegate extends LocalizationsDelegate<TestLocalizations> {
+class AsyncTestLocalizationsDelegate
+    extends LocalizationsDelegate<TestLocalizations> {
   AsyncTestLocalizationsDelegate([this.prefix]);
 
   final String? prefix; // Changing this value triggers a rebuild
@@ -63,7 +69,8 @@ class AsyncTestLocalizationsDelegate extends LocalizationsDelegate<TestLocalizat
   bool isSupported(Locale locale) => true;
 
   @override
-  Future<TestLocalizations> load(Locale locale) => TestLocalizations.loadAsync(locale, prefix);
+  Future<TestLocalizations> load(Locale locale) =>
+      TestLocalizations.loadAsync(locale, prefix);
 
   @override
   bool shouldReload(AsyncTestLocalizationsDelegate old) {
@@ -72,7 +79,8 @@ class AsyncTestLocalizationsDelegate extends LocalizationsDelegate<TestLocalizat
   }
 
   @override
-  String toString() => '${objectRuntimeType(this, 'AsyncTestLocalizationsDelegate')}($prefix)';
+  String toString() =>
+      '${objectRuntimeType(this, 'AsyncTestLocalizationsDelegate')}($prefix)';
 }
 
 class MoreLocalizations {
@@ -98,9 +106,11 @@ class MoreLocalizations {
   String get message => '$locale';
 }
 
-class SyncMoreLocalizationsDelegate extends LocalizationsDelegate<MoreLocalizations> {
+class SyncMoreLocalizationsDelegate
+    extends LocalizationsDelegate<MoreLocalizations> {
   @override
-  Future<MoreLocalizations> load(Locale locale) => MoreLocalizations.loadSync(locale);
+  Future<MoreLocalizations> load(Locale locale) =>
+      MoreLocalizations.loadSync(locale);
 
   @override
   bool isSupported(Locale locale) => true;
@@ -109,9 +119,11 @@ class SyncMoreLocalizationsDelegate extends LocalizationsDelegate<MoreLocalizati
   bool shouldReload(SyncMoreLocalizationsDelegate old) => false;
 }
 
-class AsyncMoreLocalizationsDelegate extends LocalizationsDelegate<MoreLocalizations> {
+class AsyncMoreLocalizationsDelegate
+    extends LocalizationsDelegate<MoreLocalizations> {
   @override
-  Future<MoreLocalizations> load(Locale locale) => MoreLocalizations.loadAsync(locale);
+  Future<MoreLocalizations> load(Locale locale) =>
+      MoreLocalizations.loadAsync(locale);
 
   @override
   bool isSupported(Locale locale) => true;
@@ -134,7 +146,9 @@ class OnlyRTLDefaultWidgetsLocalizationsDelegate
 
   @override
   Future<WidgetsLocalizations> load(Locale locale) {
-    return SynchronousFuture<WidgetsLocalizations>(OnlyRTLDefaultWidgetsLocalizations());
+    return SynchronousFuture<WidgetsLocalizations>(
+      OnlyRTLDefaultWidgetsLocalizations(),
+    );
   }
 
   @override
@@ -146,7 +160,10 @@ Widget buildFrame({
   Iterable<LocalizationsDelegate<dynamic>>? delegates,
   required WidgetBuilder buildContent,
   LocaleResolutionCallback? localeResolutionCallback,
-  List<Locale> supportedLocales = const <Locale>[Locale('en', 'US'), Locale('en', 'GB')],
+  List<Locale> supportedLocales = const <Locale>[
+    Locale('en', 'US'),
+    Locale('en', 'GB'),
+  ],
 }) {
   return WidgetsApp(
     color: const Color(0xFFFFFFFF),
@@ -156,9 +173,10 @@ Widget buildFrame({
     supportedLocales: supportedLocales,
     onGenerateRoute: (RouteSettings settings) {
       return PageRouteBuilder<void>(
-        pageBuilder: (BuildContext context, Animation<double> _, Animation<double> _) {
-          return buildContent(context);
-        },
+        pageBuilder:
+            (BuildContext context, Animation<double> _, Animation<double> _) {
+              return buildContent(context);
+            },
       );
     },
   );
@@ -174,7 +192,10 @@ class SyncLoadTest extends StatefulWidget {
 class SyncLoadTestState extends State<SyncLoadTest> {
   @override
   Widget build(BuildContext context) {
-    return Text(TestLocalizations.of(context).message, textDirection: TextDirection.rtl);
+    return Text(
+      TestLocalizations.of(context).message,
+      textDirection: TextDirection.rtl,
+    );
   }
 }
 
@@ -202,40 +223,48 @@ void main() {
     expect(Localizations.localeOf(pageContext), const Locale('en', 'US'));
   });
 
-  testWidgets('Localizations.localeFor in a WidgetsApp with an explicit locale', (
+  testWidgets(
+    'Localizations.localeFor in a WidgetsApp with an explicit locale',
+    (WidgetTester tester) async {
+      const Locale locale = Locale('en', 'US');
+      late BuildContext pageContext;
+
+      await tester.pumpWidget(
+        buildFrame(
+          locale: locale,
+          buildContent: (BuildContext context) {
+            pageContext = context;
+            return const Text('Hello World');
+          },
+        ),
+      );
+
+      expect(Localizations.localeOf(pageContext), locale);
+
+      await tester.binding.setLocale('en', 'GB');
+      await tester.pump();
+
+      // The WidgetApp's explicit locale overrides the system's locale.
+      expect(Localizations.localeOf(pageContext), locale);
+    },
+  );
+
+  testWidgets('Synchronously loaded localizations in a WidgetsApp', (
     WidgetTester tester,
   ) async {
-    const Locale locale = Locale('en', 'US');
-    late BuildContext pageContext;
-
-    await tester.pumpWidget(
-      buildFrame(
-        locale: locale,
-        buildContent: (BuildContext context) {
-          pageContext = context;
-          return const Text('Hello World');
-        },
-      ),
-    );
-
-    expect(Localizations.localeOf(pageContext), locale);
-
-    await tester.binding.setLocale('en', 'GB');
-    await tester.pump();
-
-    // The WidgetApp's explicit locale overrides the system's locale.
-    expect(Localizations.localeOf(pageContext), locale);
-  });
-
-  testWidgets('Synchronously loaded localizations in a WidgetsApp', (WidgetTester tester) async {
-    final List<LocalizationsDelegate<dynamic>> delegates = <LocalizationsDelegate<dynamic>>[
-      SyncTestLocalizationsDelegate(),
-      DefaultWidgetsLocalizations.delegate,
-    ];
+    final List<LocalizationsDelegate<dynamic>> delegates =
+        <LocalizationsDelegate<dynamic>>[
+          SyncTestLocalizationsDelegate(),
+          DefaultWidgetsLocalizations.delegate,
+        ];
 
     Future<void> pumpTest(Locale locale) async {
       await tester.pumpWidget(
-        Localizations(locale: locale, delegates: delegates, child: const SyncLoadTest()),
+        Localizations(
+          locale: locale,
+          delegates: delegates,
+          child: const SyncLoadTest(),
+        ),
       );
     }
 
@@ -251,10 +280,14 @@ void main() {
     expect(find.text('en_US'), findsOneWidget);
   });
 
-  testWidgets('Asynchronously loaded localizations in a WidgetsApp', (WidgetTester tester) async {
+  testWidgets('Asynchronously loaded localizations in a WidgetsApp', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildFrame(
-        delegates: <LocalizationsDelegate<dynamic>>[AsyncTestLocalizationsDelegate()],
+        delegates: <LocalizationsDelegate<dynamic>>[
+          AsyncTestLocalizationsDelegate(),
+        ],
         buildContent: (BuildContext context) {
           return Text(TestLocalizations.of(context).message);
         },
@@ -263,11 +296,19 @@ void main() {
     await tester.pump(
       const Duration(milliseconds: 50),
     ); // TestLocalizations.loadAsync() takes 100ms
-    expect(find.text('en_US'), findsNothing); // TestLocalizations hasn't been loaded yet
+    expect(
+      find.text('en_US'),
+      findsNothing,
+    ); // TestLocalizations hasn't been loaded yet
 
-    await tester.pump(const Duration(milliseconds: 50)); // TestLocalizations.loadAsync() completes
+    await tester.pump(
+      const Duration(milliseconds: 50),
+    ); // TestLocalizations.loadAsync() completes
     await tester.pumpAndSettle();
-    expect(find.text('en_US'), findsOneWidget); // default test locale is US english
+    expect(
+      find.text('en_US'),
+      findsOneWidget,
+    ); // default test locale is US english
 
     await tester.binding.setLocale('en', 'GB');
     await tester.pump(const Duration(milliseconds: 100));
@@ -279,12 +320,16 @@ void main() {
     // TestLocalizations.loadAsync() hasn't completed yet so the old text
     // localization is still displayed
     expect(find.text('en_GB'), findsOneWidget);
-    await tester.pump(const Duration(milliseconds: 50)); // finish the async load
+    await tester.pump(
+      const Duration(milliseconds: 50),
+    ); // finish the async load
     await tester.pumpAndSettle();
     expect(find.text('en_US'), findsOneWidget);
   });
 
-  testWidgets('Localizations with multiple sync delegates', (WidgetTester tester) async {
+  testWidgets('Localizations with multiple sync delegates', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildFrame(
         delegates: <LocalizationsDelegate<dynamic>>[
@@ -308,7 +353,9 @@ void main() {
     expect(find.text('B: en_US'), findsOneWidget);
   });
 
-  testWidgets('Localizations with multiple delegates', (WidgetTester tester) async {
+  testWidgets('Localizations with multiple delegates', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildFrame(
         delegates: <LocalizationsDelegate<dynamic>>[
@@ -328,7 +375,10 @@ void main() {
     );
 
     await tester.pump(const Duration(milliseconds: 50));
-    expect(find.text('A: en_US'), findsNothing); // MoreLocalizations.load() hasn't completed yet
+    expect(
+      find.text('A: en_US'),
+      findsNothing,
+    ); // MoreLocalizations.load() hasn't completed yet
     expect(find.text('B: en_US'), findsNothing);
 
     await tester.pump(const Duration(milliseconds: 50));
@@ -341,7 +391,9 @@ void main() {
   testWidgets('Multiple Localizations', (WidgetTester tester) async {
     await tester.pumpWidget(
       buildFrame(
-        delegates: <LocalizationsDelegate<dynamic>>[SyncTestLocalizationsDelegate()],
+        delegates: <LocalizationsDelegate<dynamic>>[
+          SyncTestLocalizationsDelegate(),
+        ],
         locale: const Locale('en', 'US'),
         buildContent: (BuildContext context) {
           return Column(
@@ -373,8 +425,11 @@ void main() {
   // If both the locale and the length and type of a Localizations delegate list
   // stays the same BUT one of its delegate.shouldReload() methods returns true,
   // then the dependent widgets should rebuild.
-  testWidgets('Localizations sync delegate shouldReload returns true', (WidgetTester tester) async {
-    final SyncTestLocalizationsDelegate originalDelegate = SyncTestLocalizationsDelegate();
+  testWidgets('Localizations sync delegate shouldReload returns true', (
+    WidgetTester tester,
+  ) async {
+    final SyncTestLocalizationsDelegate originalDelegate =
+        SyncTestLocalizationsDelegate();
     await tester.pumpWidget(
       buildFrame(
         delegates: <LocalizationsDelegate<dynamic>>[
@@ -398,7 +453,8 @@ void main() {
     expect(find.text('B: en_US'), findsOneWidget);
     expect(originalDelegate.shouldReloadValues, <bool>[]);
 
-    final SyncTestLocalizationsDelegate modifiedDelegate = SyncTestLocalizationsDelegate('---');
+    final SyncTestLocalizationsDelegate modifiedDelegate =
+        SyncTestLocalizationsDelegate('---');
     await tester.pumpWidget(
       buildFrame(
         delegates: <LocalizationsDelegate<dynamic>>[
@@ -449,7 +505,8 @@ void main() {
     expect(find.text('A: en_US'), findsOneWidget);
     expect(find.text('B: en_US'), findsOneWidget);
 
-    final AsyncTestLocalizationsDelegate modifiedDelegate = AsyncTestLocalizationsDelegate('---');
+    final AsyncTestLocalizationsDelegate modifiedDelegate =
+        AsyncTestLocalizationsDelegate('---');
     await tester.pumpWidget(
       buildFrame(
         delegates: <LocalizationsDelegate<dynamic>>[
@@ -474,13 +531,20 @@ void main() {
     expect(modifiedDelegate.shouldReloadValues, <bool>[true]);
   });
 
-  testWidgets('Directionality tracks system locale', (WidgetTester tester) async {
+  testWidgets('Directionality tracks system locale', (
+    WidgetTester tester,
+  ) async {
     late BuildContext pageContext;
 
     await tester.pumpWidget(
       buildFrame(
-        delegates: const <LocalizationsDelegate<dynamic>>[GlobalWidgetsLocalizations.delegate],
-        supportedLocales: const <Locale>[Locale('en', 'GB'), Locale('ar', 'EG')],
+        delegates: const <LocalizationsDelegate<dynamic>>[
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const <Locale>[
+          Locale('en', 'GB'),
+          Locale('ar', 'EG'),
+        ],
         buildContent: (BuildContext context) {
           pageContext = context;
           return const Text('Hello World');
@@ -500,9 +564,10 @@ void main() {
   testWidgets('localeResolutionCallback override', (WidgetTester tester) async {
     await tester.pumpWidget(
       buildFrame(
-        localeResolutionCallback: (Locale? newLocale, Iterable<Locale> supportedLocales) {
-          return const Locale('foo', 'BAR');
-        },
+        localeResolutionCallback:
+            (Locale? newLocale, Iterable<Locale> supportedLocales) {
+              return const Locale('foo', 'BAR');
+            },
         buildContent: (BuildContext context) {
           return Text(Localizations.localeOf(context).toString());
         },
@@ -517,7 +582,9 @@ void main() {
     expect(find.text('foo_BAR'), findsOneWidget);
   });
 
-  testWidgets('supportedLocales and defaultLocaleChangeHandler', (WidgetTester tester) async {
+  testWidgets('supportedLocales and defaultLocaleChangeHandler', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildFrame(
         supportedLocales: const <Locale>[
@@ -550,100 +617,115 @@ void main() {
     expect(find.text('zh_CN'), findsOneWidget);
   });
 
-  testWidgets("Localizations.override widget tracks parent's locale and delegates", (
+  testWidgets(
+    "Localizations.override widget tracks parent's locale and delegates",
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildFrame(
+          // Accept whatever locale we're given
+          localeResolutionCallback:
+              (Locale? locale, Iterable<Locale> supportedLocales) => locale,
+          delegates: const <LocalizationsDelegate<dynamic>>[
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          buildContent: (BuildContext context) {
+            return Localizations.override(
+              context: context,
+              child: Builder(
+                builder: (BuildContext context) {
+                  final Locale locale = Localizations.localeOf(context);
+                  final TextDirection direction = WidgetsLocalizations.of(
+                    context,
+                  ).textDirection;
+                  return Text('$locale $direction');
+                },
+              ),
+            );
+          },
+        ),
+      );
+
+      // Initial WidgetTester locale is `en_US`.
+      await tester.pumpAndSettle();
+      expect(find.text('en_US TextDirection.ltr'), findsOneWidget);
+
+      await tester.binding.setLocale('en', 'CA');
+      await tester.pumpAndSettle();
+      expect(find.text('en_CA TextDirection.ltr'), findsOneWidget);
+
+      await tester.binding.setLocale('ar', 'EG');
+      await tester.pumpAndSettle();
+      expect(find.text('ar_EG TextDirection.rtl'), findsOneWidget);
+
+      await tester.binding.setLocale('da', 'DA');
+      await tester.pumpAndSettle();
+      expect(find.text('da_DA TextDirection.ltr'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    "Localizations.override widget overrides parent's DefaultWidgetLocalizations",
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildFrame(
+          // Accept whatever locale we're given
+          localeResolutionCallback:
+              (Locale? locale, Iterable<Locale> supportedLocales) => locale,
+          buildContent: (BuildContext context) {
+            return Localizations.override(
+              context: context,
+              delegates: const <OnlyRTLDefaultWidgetsLocalizationsDelegate>[
+                // Override: no matter what the locale, textDirection is always RTL.
+                OnlyRTLDefaultWidgetsLocalizationsDelegate(),
+              ],
+              child: Builder(
+                builder: (BuildContext context) {
+                  final Locale locale = Localizations.localeOf(context);
+                  final TextDirection direction = WidgetsLocalizations.of(
+                    context,
+                  ).textDirection;
+                  return Text('$locale $direction');
+                },
+              ),
+            );
+          },
+        ),
+      );
+
+      // Initial WidgetTester locale is `en_US`.
+      await tester.pumpAndSettle();
+      expect(find.text('en_US TextDirection.rtl'), findsOneWidget);
+
+      await tester.binding.setLocale('en', 'CA');
+      await tester.pumpAndSettle();
+      expect(find.text('en_CA TextDirection.rtl'), findsOneWidget);
+
+      await tester.binding.setLocale('ar', 'EG');
+      await tester.pumpAndSettle();
+      expect(find.text('ar_EG TextDirection.rtl'), findsOneWidget);
+
+      await tester.binding.setLocale('da', 'DA');
+      await tester.pumpAndSettle();
+      expect(find.text('da_DA TextDirection.rtl'), findsOneWidget);
+    },
+  );
+
+  testWidgets('WidgetsApp overrides DefaultWidgetLocalizations', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
       buildFrame(
         // Accept whatever locale we're given
-        localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) => locale,
-        delegates: const <LocalizationsDelegate<dynamic>>[GlobalWidgetsLocalizations.delegate],
-        buildContent: (BuildContext context) {
-          return Localizations.override(
-            context: context,
-            child: Builder(
-              builder: (BuildContext context) {
-                final Locale locale = Localizations.localeOf(context);
-                final TextDirection direction = WidgetsLocalizations.of(context).textDirection;
-                return Text('$locale $direction');
-              },
-            ),
-          );
-        },
-      ),
-    );
-
-    // Initial WidgetTester locale is `en_US`.
-    await tester.pumpAndSettle();
-    expect(find.text('en_US TextDirection.ltr'), findsOneWidget);
-
-    await tester.binding.setLocale('en', 'CA');
-    await tester.pumpAndSettle();
-    expect(find.text('en_CA TextDirection.ltr'), findsOneWidget);
-
-    await tester.binding.setLocale('ar', 'EG');
-    await tester.pumpAndSettle();
-    expect(find.text('ar_EG TextDirection.rtl'), findsOneWidget);
-
-    await tester.binding.setLocale('da', 'DA');
-    await tester.pumpAndSettle();
-    expect(find.text('da_DA TextDirection.ltr'), findsOneWidget);
-  });
-
-  testWidgets("Localizations.override widget overrides parent's DefaultWidgetLocalizations", (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      buildFrame(
-        // Accept whatever locale we're given
-        localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) => locale,
-        buildContent: (BuildContext context) {
-          return Localizations.override(
-            context: context,
-            delegates: const <OnlyRTLDefaultWidgetsLocalizationsDelegate>[
-              // Override: no matter what the locale, textDirection is always RTL.
-              OnlyRTLDefaultWidgetsLocalizationsDelegate(),
-            ],
-            child: Builder(
-              builder: (BuildContext context) {
-                final Locale locale = Localizations.localeOf(context);
-                final TextDirection direction = WidgetsLocalizations.of(context).textDirection;
-                return Text('$locale $direction');
-              },
-            ),
-          );
-        },
-      ),
-    );
-
-    // Initial WidgetTester locale is `en_US`.
-    await tester.pumpAndSettle();
-    expect(find.text('en_US TextDirection.rtl'), findsOneWidget);
-
-    await tester.binding.setLocale('en', 'CA');
-    await tester.pumpAndSettle();
-    expect(find.text('en_CA TextDirection.rtl'), findsOneWidget);
-
-    await tester.binding.setLocale('ar', 'EG');
-    await tester.pumpAndSettle();
-    expect(find.text('ar_EG TextDirection.rtl'), findsOneWidget);
-
-    await tester.binding.setLocale('da', 'DA');
-    await tester.pumpAndSettle();
-    expect(find.text('da_DA TextDirection.rtl'), findsOneWidget);
-  });
-
-  testWidgets('WidgetsApp overrides DefaultWidgetLocalizations', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildFrame(
-        // Accept whatever locale we're given
-        localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) => locale,
+        localeResolutionCallback:
+            (Locale? locale, Iterable<Locale> supportedLocales) => locale,
         delegates: <OnlyRTLDefaultWidgetsLocalizationsDelegate>[
           const OnlyRTLDefaultWidgetsLocalizationsDelegate(),
         ],
         buildContent: (BuildContext context) {
           final Locale locale = Localizations.localeOf(context);
-          final TextDirection direction = WidgetsLocalizations.of(context).textDirection;
+          final TextDirection direction = WidgetsLocalizations.of(
+            context,
+          ).textDirection;
           return Text('$locale $direction');
         },
       ),
@@ -669,18 +751,23 @@ void main() {
   // We provide <Locale>[Locale('en', 'US'), Locale('zh', 'CN')] as ui.window.locales
   // for flutter tester so that the behavior of tests match that of production
   // environments. Here, we test the default locales.
-  testWidgets('WidgetsApp DefaultWidgetLocalizations', (WidgetTester tester) async {
+  testWidgets('WidgetsApp DefaultWidgetLocalizations', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpAndSettle();
     await tester.pumpWidget(
       buildFrame(
         // Accept whatever locale we're given
-        localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) => locale,
+        localeResolutionCallback:
+            (Locale? locale, Iterable<Locale> supportedLocales) => locale,
         delegates: <OnlyRTLDefaultWidgetsLocalizationsDelegate>[
           const OnlyRTLDefaultWidgetsLocalizationsDelegate(),
         ],
         buildContent: (BuildContext context) {
-          final Locale locale1 = WidgetsBinding.instance.platformDispatcher.locales.first;
-          final Locale locale2 = WidgetsBinding.instance.platformDispatcher.locales[1];
+          final Locale locale1 =
+              WidgetsBinding.instance.platformDispatcher.locales.first;
+          final Locale locale2 =
+              WidgetsBinding.instance.platformDispatcher.locales[1];
           return Text('$locale1 $locale2');
         },
       ),
@@ -696,7 +783,10 @@ void main() {
     // app locale matches a supportedLocale
     await tester.pumpWidget(
       buildFrame(
-        supportedLocales: const <Locale>[Locale('zh', 'CN'), Locale('en', 'US')],
+        supportedLocales: const <Locale>[
+          Locale('zh', 'CN'),
+          Locale('en', 'US'),
+        ],
         locale: const Locale('en', 'US'),
         buildContent: (BuildContext context) {
           return Text(Localizations.localeOf(context).toString());
@@ -709,7 +799,10 @@ void main() {
     // app locale matches a supportedLocale's language
     await tester.pumpWidget(
       buildFrame(
-        supportedLocales: const <Locale>[Locale('zh', 'CN'), Locale('en', 'GB')],
+        supportedLocales: const <Locale>[
+          Locale('zh', 'CN'),
+          Locale('en', 'GB'),
+        ],
         locale: const Locale('en', 'US'),
         buildContent: (BuildContext context) {
           return Text(Localizations.localeOf(context).toString());
@@ -722,7 +815,10 @@ void main() {
     // app locale matches no supportedLocale
     await tester.pumpWidget(
       buildFrame(
-        supportedLocales: const <Locale>[Locale('zh', 'CN'), Locale('en', 'US')],
+        supportedLocales: const <Locale>[
+          Locale('zh', 'CN'),
+          Locale('en', 'US'),
+        ],
         locale: const Locale('ab', 'CD'),
         buildContent: (BuildContext context) {
           return Text(Localizations.localeOf(context).toString());
@@ -737,7 +833,11 @@ void main() {
   testWidgets('WidgetsApp Unicode tr35 1', (WidgetTester tester) async {
     await tester.pumpWidget(
       buildFrame(
-        supportedLocales: const <Locale>[Locale('de'), Locale('fr'), Locale('ja')],
+        supportedLocales: const <Locale>[
+          Locale('de'),
+          Locale('fr'),
+          Locale('ja'),
+        ],
         buildContent: (BuildContext context) {
           final Locale locale = Localizations.localeOf(context);
           return Text('$locale');
@@ -756,14 +856,20 @@ void main() {
   testWidgets('WidgetsApp Unicode tr35 2', (WidgetTester tester) async {
     await tester.pumpWidget(
       buildFrame(
-        supportedLocales: const <Locale>[Locale('ja', 'JP'), Locale('de'), Locale('zh', 'TW')],
+        supportedLocales: const <Locale>[
+          Locale('ja', 'JP'),
+          Locale('de'),
+          Locale('zh', 'TW'),
+        ],
         buildContent: (BuildContext context) {
           final Locale locale = Localizations.localeOf(context);
           return Text('$locale');
         },
       ),
     );
-    await tester.binding.setLocales(const <Locale>[Locale.fromSubtags(languageCode: 'zh')]);
+    await tester.binding.setLocales(const <Locale>[
+      Locale.fromSubtags(languageCode: 'zh'),
+    ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_TW'), findsOneWidget);
 
@@ -783,9 +889,21 @@ void main() {
       buildFrame(
         supportedLocales: const <Locale>[
           Locale.fromSubtags(languageCode: 'zh'),
-          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
-          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK'),
+          Locale.fromSubtags(
+            languageCode: 'zh',
+            scriptCode: 'Hans',
+            countryCode: 'CN',
+          ),
+          Locale.fromSubtags(
+            languageCode: 'zh',
+            scriptCode: 'Hant',
+            countryCode: 'TW',
+          ),
+          Locale.fromSubtags(
+            languageCode: 'zh',
+            scriptCode: 'Hant',
+            countryCode: 'HK',
+          ),
         ],
         buildContent: (BuildContext context) {
           final Locale locale = Localizations.localeOf(context);
@@ -805,7 +923,11 @@ void main() {
     expect(find.text('zh'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'US'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hant',
+        countryCode: 'US',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hant_TW'), findsOneWidget);
@@ -817,7 +939,11 @@ void main() {
     expect(find.text('zh_Hant_TW'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hant',
+        countryCode: 'TW',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hant_TW'), findsOneWidget);
@@ -835,7 +961,11 @@ void main() {
     expect(find.text('zh_Hant_HK'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'HK'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'HK',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
@@ -855,8 +985,16 @@ void main() {
     // This behavior is up to the implementer to decide if a perfect scriptCode match
     // is better than a countryCode match.
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'CN'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hant',
+        countryCode: 'CN',
+      ),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ),
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN'),
     ]);
     await tester.pumpAndSettle();
@@ -867,7 +1005,11 @@ void main() {
     await tester.binding.setLocales(const <Locale>[
       Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
@@ -875,21 +1017,33 @@ void main() {
     await tester.binding.setLocales(const <Locale>[
       Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'JP'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'JP',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
       Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
@@ -898,7 +1052,11 @@ void main() {
     // at least familiar with their country's language. This is a possible case only
     // on iOS, where countryCode can be selected independently from language and script.
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'en', scriptCode: 'Hans', countryCode: 'TW'),
+      Locale.fromSubtags(
+        languageCode: 'en',
+        scriptCode: 'Hans',
+        countryCode: 'TW',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hant_TW'), findsOneWidget);
@@ -918,13 +1076,27 @@ void main() {
 
   // Same as 'WidgetsApp EdgeCase Chinese' test except the supportedLocales order is
   // reversed.
-  testWidgets('WidgetsApp EdgeCase ReverseChinese', (WidgetTester tester) async {
+  testWidgets('WidgetsApp EdgeCase ReverseChinese', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildFrame(
         supportedLocales: const <Locale>[
-          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK'),
-          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+          Locale.fromSubtags(
+            languageCode: 'zh',
+            scriptCode: 'Hant',
+            countryCode: 'HK',
+          ),
+          Locale.fromSubtags(
+            languageCode: 'zh',
+            scriptCode: 'Hant',
+            countryCode: 'TW',
+          ),
+          Locale.fromSubtags(
+            languageCode: 'zh',
+            scriptCode: 'Hans',
+            countryCode: 'CN',
+          ),
           Locale.fromSubtags(languageCode: 'zh'),
         ],
         buildContent: (BuildContext context) {
@@ -945,7 +1117,11 @@ void main() {
     expect(find.text('zh'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'US'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hant',
+        countryCode: 'US',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hant_HK'), findsOneWidget);
@@ -957,7 +1133,11 @@ void main() {
     expect(find.text('zh_Hant_HK'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hant',
+        countryCode: 'TW',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hant_TW'), findsOneWidget);
@@ -975,7 +1155,11 @@ void main() {
     expect(find.text('zh_Hant_HK'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'HK'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'HK',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
@@ -995,8 +1179,16 @@ void main() {
     // This behavior is up to the implementer to decide if a perfect scriptCode match
     // is better than a countryCode match.
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'CN'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hant',
+        countryCode: 'CN',
+      ),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ),
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN'),
     ]);
     await tester.pumpAndSettle();
@@ -1007,7 +1199,11 @@ void main() {
     await tester.binding.setLocales(const <Locale>[
       Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
@@ -1015,21 +1211,33 @@ void main() {
     await tester.binding.setLocales(const <Locale>[
       Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'JP'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'JP',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
 
     await tester.binding.setLocales(const <Locale>[
       Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hans_CN'), findsOneWidget);
@@ -1038,7 +1246,11 @@ void main() {
     // at least familiar with their country's language. This is a possible case only
     // on iOS, where countryCode can be selected independently from language and script.
     await tester.binding.setLocales(const <Locale>[
-      Locale.fromSubtags(languageCode: 'en', scriptCode: 'Hans', countryCode: 'TW'),
+      Locale.fromSubtags(
+        languageCode: 'en',
+        scriptCode: 'Hans',
+        countryCode: 'TW',
+      ),
     ]);
     await tester.pumpAndSettle();
     expect(find.text('zh_Hant_TW'), findsOneWidget);
@@ -1266,7 +1478,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('en_US'), findsOneWidget);
 
-    await tester.binding.setLocales(const <Locale>[Locale.fromSubtags(languageCode: 'en')]);
+    await tester.binding.setLocales(const <Locale>[
+      Locale.fromSubtags(languageCode: 'en'),
+    ]);
     await tester.pumpAndSettle();
     expect(find.text('en_US'), findsOneWidget);
 
@@ -1288,7 +1502,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('ar_SA'), findsOneWidget);
 
-    await tester.binding.setLocales(const <Locale>[Locale.fromSubtags(languageCode: 'ar')]);
+    await tester.binding.setLocales(const <Locale>[
+      Locale.fromSubtags(languageCode: 'ar'),
+    ]);
     await tester.pumpAndSettle();
     expect(find.text('ar_SA'), findsOneWidget);
 
@@ -1304,7 +1520,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('es_ES'), findsOneWidget);
 
-    await tester.binding.setLocales(const <Locale>[Locale.fromSubtags(languageCode: 'es')]);
+    await tester.binding.setLocales(const <Locale>[
+      Locale.fromSubtags(languageCode: 'es'),
+    ]);
     await tester.pumpAndSettle();
     expect(find.text('es_MX'), findsOneWidget);
 
@@ -1384,7 +1602,9 @@ void main() {
     expect(find.text('en_CA'), findsOneWidget);
   });
 
-  testWidgets('WidgetsApp invalid preferredLocales', (WidgetTester tester) async {
+  testWidgets('WidgetsApp invalid preferredLocales', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildFrame(
         supportedLocales: const <Locale>[
@@ -1394,12 +1614,13 @@ void main() {
           Locale('en', 'AU'),
           Locale('de', 'DE'),
         ],
-        localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
-          if (locale == null) {
-            return const Locale('und', 'US');
-          }
-          return const Locale('en', 'US');
-        },
+        localeResolutionCallback:
+            (Locale? locale, Iterable<Locale> supportedLocales) {
+              if (locale == null) {
+                return const Locale('und', 'US');
+              }
+              return const Locale('en', 'US');
+            },
         buildContent: (BuildContext context) {
           final Locale locale = Localizations.localeOf(context);
           return Text('$locale');

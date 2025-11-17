@@ -14,7 +14,7 @@ import 'utils/date_localizations.dart' as util;
 import 'widgets_localizations.dart';
 
 // Examples can assume:
-// import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_localizations_tk/flutter_localizations.dart';
 // import 'package:flutter/cupertino.dart';
 
 /// Implementation of localized strings for Cupertino widgets using the `intl`
@@ -490,17 +490,20 @@ abstract class GlobalCupertinoLocalizations implements CupertinoLocalizations {
   ///   // ...
   /// )
   /// ```
-  static const List<LocalizationsDelegate<dynamic>> delegates = <LocalizationsDelegate<dynamic>>[
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> delegates =
+      <LocalizationsDelegate<dynamic>>[
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 }
 
-class _GlobalCupertinoLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
+class _GlobalCupertinoLocalizationsDelegate
+    extends LocalizationsDelegate<CupertinoLocalizations> {
   const _GlobalCupertinoLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => kCupertinoSupportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      kCupertinoSupportedLanguages.contains(locale.languageCode);
 
   static final Map<Locale, Future<CupertinoLocalizations>> _loadedTranslations =
       <Locale, Future<CupertinoLocalizations>>{};
@@ -511,7 +514,9 @@ class _GlobalCupertinoLocalizationsDelegate extends LocalizationsDelegate<Cupert
     return _loadedTranslations.putIfAbsent(locale, () {
       util.loadDateIntlDataIfNotLoaded();
 
-      final String localeName = intl.Intl.canonicalizedLocale(locale.toString());
+      final String localeName = intl.Intl.canonicalizedLocale(
+        locale.toString(),
+      );
       assert(
         locale.toString() == localeName,
         'Flutter does not support the non-standard locale form $locale (which '

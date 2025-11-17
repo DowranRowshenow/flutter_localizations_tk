@@ -15,7 +15,7 @@ import 'utils/date_localizations.dart' as util;
 import 'widgets_localizations.dart';
 
 // Examples can assume:
-// import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_localizations_tk/flutter_localizations.dart';
 // import 'package:flutter/material.dart';
 
 /// Implementation of localized strings for the material widgets using the
@@ -128,7 +128,9 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
 
   @override
   String formatHour(TimeOfDay timeOfDay, {bool alwaysUse24HourFormat = false}) {
-    switch (hourFormat(of: timeOfDayFormat(alwaysUse24HourFormat: alwaysUse24HourFormat))) {
+    switch (hourFormat(
+      of: timeOfDayFormat(alwaysUse24HourFormat: alwaysUse24HourFormat),
+    )) {
       case HourFormat.HH:
         return _twoDigitZeroPaddedFormat.format(timeOfDay.hour);
       case HourFormat.H:
@@ -182,7 +184,9 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
   @override
   DateTime? parseCompactDate(String? inputString) {
     try {
-      return inputString != null ? _compactDateFormat.parseStrict(inputString) : null;
+      return inputString != null
+          ? _compactDateFormat.parseStrict(inputString)
+          : null;
     } on FormatException {
       return null;
     }
@@ -194,7 +198,8 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
   }
 
   @override
-  int get firstDayOfWeekIndex => (_longDateFormat.dateSymbols.FIRSTDAYOFWEEK + 1) % 7;
+  int get firstDayOfWeekIndex =>
+      (_longDateFormat.dateSymbols.FIRSTDAYOFWEEK + 1) % 7;
 
   @override
   String formatDecimal(int number) {
@@ -202,7 +207,10 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
   }
 
   @override
-  String formatTimeOfDay(TimeOfDay timeOfDay, {bool alwaysUse24HourFormat = false}) {
+  String formatTimeOfDay(
+    TimeOfDay timeOfDay, {
+    bool alwaysUse24HourFormat = false,
+  }) {
     // Not using intl.DateFormat for two reasons:
     //
     // - DateFormat supports more formats than our material time picker does,
@@ -211,7 +219,10 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
     // - DateFormat operates on DateTime, which is sensitive to time eras and
     //   time zones, while here we want to format hour and minute within one day
     //   no matter what date the day falls on.
-    final String hour = formatHour(timeOfDay, alwaysUse24HourFormat: alwaysUse24HourFormat);
+    final String hour = formatHour(
+      timeOfDay,
+      alwaysUse24HourFormat: alwaysUse24HourFormat,
+    );
     final String minute = formatMinute(timeOfDay);
     switch (timeOfDayFormat(alwaysUse24HourFormat: alwaysUse24HourFormat)) {
       case TimeOfDayFormat.h_colon_mm_space_a:
@@ -242,7 +253,10 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
 
   @override
   String dateRangeStartDateSemanticLabel(String formattedDate) {
-    return dateRangeStartDateSemanticLabelRaw.replaceFirst(r'$fullDate', formattedDate);
+    return dateRangeStartDateSemanticLabelRaw.replaceFirst(
+      r'$fullDate',
+      formattedDate,
+    );
   }
 
   /// The raw version of [dateRangeEndDateSemanticLabel], with `$fullDate` verbatim
@@ -252,7 +266,10 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
 
   @override
   String dateRangeEndDateSemanticLabel(String formattedDate) {
-    return dateRangeEndDateSemanticLabelRaw.replaceFirst(r'$fullDate', formattedDate);
+    return dateRangeEndDateSemanticLabelRaw.replaceFirst(
+      r'$fullDate',
+      formattedDate,
+    );
   }
 
   /// The raw version of [scrimOnTapHint], with `$modalRouteContentName` verbatim
@@ -290,8 +307,15 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
   String get pageRowsInfoTitleRaw;
 
   @override
-  String pageRowsInfoTitle(int firstRow, int lastRow, int rowCount, bool rowCountIsApproximate) {
-    String? text = rowCountIsApproximate ? pageRowsInfoTitleApproximateRaw : null;
+  String pageRowsInfoTitle(
+    int firstRow,
+    int lastRow,
+    int rowCount,
+    bool rowCountIsApproximate,
+  ) {
+    String? text = rowCountIsApproximate
+        ? pageRowsInfoTitleApproximateRaw
+        : null;
     text ??= pageRowsInfoTitleRaw;
     return text
         .replaceFirst(r'$firstRow', formatDecimal(firstRow))
@@ -696,11 +720,12 @@ abstract class GlobalMaterialLocalizations implements MaterialLocalizations {
   ///   // ...
   /// )
   /// ```
-  static const List<LocalizationsDelegate<dynamic>> delegates = <LocalizationsDelegate<dynamic>>[
-    GlobalCupertinoLocalizations.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> delegates =
+      <LocalizationsDelegate<dynamic>>[
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 }
 
 /// Finds the [TimeOfDayFormat] to use instead of the `original` when the
@@ -719,11 +744,13 @@ TimeOfDayFormat _get24HourVersionOf(TimeOfDayFormat original) {
   }
 }
 
-class _MaterialLocalizationsDelegate extends LocalizationsDelegate<MaterialLocalizations> {
+class _MaterialLocalizationsDelegate
+    extends LocalizationsDelegate<MaterialLocalizations> {
   const _MaterialLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => kMaterialSupportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      kMaterialSupportedLanguages.contains(locale.languageCode);
 
   static final Map<Locale, Future<MaterialLocalizations>> _loadedTranslations =
       <Locale, Future<MaterialLocalizations>>{};
@@ -734,7 +761,9 @@ class _MaterialLocalizationsDelegate extends LocalizationsDelegate<MaterialLocal
     return _loadedTranslations.putIfAbsent(locale, () {
       util.loadDateIntlDataIfNotLoaded();
 
-      final String localeName = intl.Intl.canonicalizedLocale(locale.toString());
+      final String localeName = intl.Intl.canonicalizedLocale(
+        locale.toString(),
+      );
       assert(
         locale.toString() == localeName,
         'Flutter does not support the non-standard locale form $locale (which '

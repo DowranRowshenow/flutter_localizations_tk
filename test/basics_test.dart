@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations_tk/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -70,7 +70,10 @@ void main() {
       // PageView calls ScrollPosition.dispose() during didChangeDependencies.
       await tester.pumpWidget(
         MaterialApp(
-          supportedLocales: const <Locale>[Locale('en', 'US'), Locale('es', 'ES')],
+          supportedLocales: const <Locale>[
+            Locale('en', 'US'),
+            Locale('es', 'ES'),
+          ],
           localizationsDelegates: <LocalizationsDelegate<dynamic>>[
             _DummyLocalizationsDelegate(),
             ...GlobalMaterialLocalizations.delegates,
@@ -104,7 +107,8 @@ void main() {
 
 /// A localizations delegate that does not contain any useful data, and is only
 /// used to trigger didChangeDependencies upon locale change.
-class _DummyLocalizationsDelegate extends LocalizationsDelegate<DummyLocalizations> {
+class _DummyLocalizationsDelegate
+    extends LocalizationsDelegate<DummyLocalizations> {
   @override
   Future<DummyLocalizations> load(Locale locale) async => DummyLocalizations();
 
