@@ -25,4 +25,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+executables:
+  # The user command: flutter pub run your_localizations_plugin:gen-l10n-tk
+  gen_l10n_tk: gen_l10n_tk
+  post_process_l10n: post_process_l10n
 # PUBSPEC CHECKSUM: c2j4ng
