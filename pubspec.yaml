@@ -1,5 +1,7 @@
 name: flutter_localizations_tk
 
+version: 1.0.0
+
 environment:
   sdk: ^3.8.0-0
 
@@ -15,9 +17,9 @@ dependencies:
     sdk: flutter
   intl: # You must keep the name 'intl' to override the default dependency
     git:
-      url: https://github.com/DowranRowshenow/i18n_tk.git 
+      url: https://github.com/DowranRowshenow/i18n_tk.git
       # Specify the subdirectory where the pubspec.yaml lives inside the monorepo
-      path: pkgs/intl 
+      path: pkgs/intl
       ref: main
   path: 1.9.1
 
